@@ -5,8 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(89deg, #FF5EDf 0%, #04C8De 100%);
-}
+  /*background: linear-gradient(89deg, #FF5EDf 0%, #04C8De 100%);*/
+  /*background: linear-gradient(45deg, #343702 0%, #184500 20%, #187546 30%, #006782 40%, #0b1284 50%, #760ea1 60%, #83096e 70%, #840b2a 80%, #b13e12 90%, #e27412 100%);*/
+  background: rgb(35,10,25);
+  background: linear-gradient(90deg, rgba(35,10,25,1) 2%, rgba(37,130,60,1) 44%, rgba(35,10,163,0.9710259103641457) 71%, rgba(164,18,63,1) 91%);}
 
 button {
   cursor: pointer;

@@ -1,12 +1,14 @@
 import React from "react";
-// Pass imageUrl to FaceDetect component
-const FaceDetect = ({ imageUrl }) => {
-    console.log(imageUrl)
+import './FaceDetect.css';
+const FaceDetect = ({ box, imageUrl }) => {
     return (
         <div className="center ma">
             <div className="absolute mt2">
-            {/*we set our image SRC to the url of the fetch image*/}
-                <img alt="" src={imageUrl} width="500px" heigh="auto" />
+                <img id='image' alt="" src={imageUrl} width="400px" heigh="auto" />
+                <div
+                    className='bounding-box'
+                    style = {{top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }}
+                ></div>
             </div>
         </div>
     );

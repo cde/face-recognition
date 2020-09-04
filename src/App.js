@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Particles from "react-particles-js";
-// import ClarifaiStub, { grpc } from 'clarifai-nodejs-grpc';
 import Clarifai from "clarifai";
 
 import Navigation from "./components/Navigation/Navigation";
@@ -11,7 +10,7 @@ import './App.css';
 import 'tachyons'
 
 const app = new Clarifai.App({
-    apiKey: 'xx',
+    apiKey: 'your api key here',
 });
 const particlesOptions = {
     particles: {
@@ -26,7 +25,7 @@ const particlesOptions = {
             shadow: {
                 enable: true,
                 color: "#3CA9D1",
-                // blur: 5
+                blur: 5
             }
         }
     }
@@ -37,24 +36,44 @@ class App extends Component {
         this.state = {
             input: "",
             imageUrl: "",
+            box: {}
         };
     }
-    onInputChange = (event) => {
-        console.log(event)
-        const value = event.target.value
-        this.setState({ input: value });
-    }
-    onButtonSubmit = () => {
-        console.log('click')
-        this.setState({ imageUrl: this.state.input });
-        app.models.predict(Clarifai.COLOR_MODEL, 'https://samples.clarifai.com/metro-north.jpg')
-            .then(response => {
-                console.log(response);
-            })
-            .catch(err => {
-                console.log(err);
-            });
 
+    calculateFaceLocation = (data) => {
+        console.log(data)
+        const bounding_box = data.outputs[0].data.regions[0].region_info.bounding_box;
+        const image = document.getElementById('image');
+        const width = Number(image.width)
+        const height = Number(image.height)
+        console.log(bounding_box);
+        console.log(width);
+        console.log(height);
+        return {
+            leftCol: bounding_box.left_col * width,
+            topRow: bounding_box.top_row * height,
+            rightCol: width - (bounding_box.right_col * width),
+            bottomRow: height - (bounding_box.bottom_row * height)
+        }
+    }
+
+    displayFaceBox = ( box ) => {
+        console.log(box)
+        this.setState({box})
+    }
+
+    onInputChange = (event) => {
+        this.setState({input: event.target.value });
+    }
+
+    onButtonSubmit = async () => {
+        try {
+            this.setState({ imageUrl: this.state.input });
+            const prediction = await app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+            this.displayFaceBox(this.calculateFaceLocation(prediction))
+        } catch(err)  {
+            console.log(err);
+        };
     }
     render() {
         return (
@@ -69,7 +88,10 @@ class App extends Component {
                     onInputChange = {this.onInputChange}
                     onButtonSubmit = {this.onButtonSubmit}
                 />
-                <FaceDetect imageUrl={this.state.imageUrl}/>
+                <FaceDetect
+                    box = {this.state.box}
+                    imageUrl={this.state.imageUrl}
+                />
 
             </div>
         );

@@ -3,7 +3,7 @@ import './InputForm.css'
 
 const DetectForm = ({onInputChange, onButtonSubmit}) => (
     <div>
-        <p className='f3'> {'This Magic will detect faces in your pictures. Get it a try.'}</p>
+        <p className='white f3 f3-ns'> {'This Magic will detect faces in your pictures. Get it a try.'}</p>
         <div className='center'>
             <div className='form center pa4 b43 shadow-2'>
                 <input className='f4 pa2 w-70 center' type='text' onChange={onInputChange} />
